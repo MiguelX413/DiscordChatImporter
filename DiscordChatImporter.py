@@ -1,6 +1,7 @@
 #!/usr/bin/python
 from discord_webhook import DiscordWebhook, DiscordEmbed
 from dateutil import parser
+
 try:
     from progressbar import progressbar
 
@@ -50,7 +51,7 @@ def main(filepath: str, url: str, bar: bool = True) -> None:
             author.get("isBot"),
             author.get("avatarUrl"),
         )
-        #print(url_re.sub("", author_avatar_url))
+        # print(url_re.sub("", author_avatar_url))
         webhook = DiscordWebhook(
             url=url,
             rate_limit_retry=True,
@@ -79,15 +80,13 @@ def main(filepath: str, url: str, bar: bool = True) -> None:
             embed2 = DiscordEmbed()
             if author_color is not None:
                 embed2.set_color(author_color.replace("#", ""))
-            embed2.set_timestamp(
-                parser.isoparse(timestampEdited).timestamp()
-            )
+            embed2.set_timestamp(parser.isoparse(timestampEdited).timestamp())
             embed2.set_footer(text="Edited")
             webhook.add_embed(embed2)
 
         if content != "":
             embed3 = DiscordEmbed(
-                #title="Content",
+                # title="Content",
                 description=content,
             )
             if author_color is not None:
@@ -116,9 +115,7 @@ def main(filepath: str, url: str, bar: bool = True) -> None:
             if embed_url != "":
                 sub_embed.set_url(embed_url)
             if (embed_timestamp != "") and (embed_timestamp != None):
-                sub_embed.set_timestamp(
-                    parser.isoparse(embed_timestamp).timestamp()
-                )
+                sub_embed.set_timestamp(parser.isoparse(embed_timestamp).timestamp())
             if embed_description != "":
                 sub_embed.set_description(embed_description)
             if embed_color is not None:
@@ -131,7 +128,10 @@ def main(filepath: str, url: str, bar: bool = True) -> None:
 
 if __name__ == "__main__":
     import argparse
-    argparser = argparse.ArgumentParser(description="Loads data produced with DiscordChatImporter")
+
+    argparser = argparse.ArgumentParser(
+        description="Loads data produced with DiscordChatImporter"
+    )
     argparser.add_argument("-f", "--file", help="JSON File", type=str, required=True)
     argparser.add_argument("-u", "--url", help="Webhook URL", type=str, required=True)
     args = argparser.parse_args()
