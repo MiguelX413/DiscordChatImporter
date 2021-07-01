@@ -68,7 +68,7 @@ def main(filepath: str, url: str, bar: bool = True) -> None:
             icon_url=url_re.sub("", author_avatar_url),
         )
         embed1.add_embed_field(
-            name="Discord User", value="<@" + author_id + ">", inline=True
+            name="Discord User", value="<@%s>" % author_id, inline=True
         )
         embed1.add_embed_field(name="Name", value=author_name, inline=True)
         if (author_nickname != author_name) and (author_nickname != ""):
