@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 from discord_webhook import DiscordWebhook, DiscordEmbed
 from dateutil import parser
 
