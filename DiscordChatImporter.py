@@ -73,6 +73,12 @@ def main(filepath: str, url: str, bar: bool = True) -> None:
         embed1.add_embed_field(name="Name", value=author_name, inline=True)
         if (author_nickname != author_name) and (author_nickname != ""):
             embed1.add_embed_field(name="Nickname", value=author_nickname, inline=True)
+        if author_is_bot:
+            embed1.add_embed_field(name="isBot", value="True", inline=False)
+        if isPinned:
+            embed1.add_embed_field(
+                name="isPinned", value="True", inline=True if author_is_bot else False
+            )
         embed1.set_timestamp(parser.isoparse(timestamp).timestamp())
         webhook.add_embed(embed1)
 
@@ -100,6 +106,9 @@ def main(filepath: str, url: str, bar: bool = True) -> None:
                 embed_timestamp,
                 embed_description,
                 embed_color,
+                embed_thumbnail,
+                embed_footer,
+                embed_fields,
                 embed_author,
             ) = (
                 embed.get("title"),
@@ -107,12 +116,15 @@ def main(filepath: str, url: str, bar: bool = True) -> None:
                 embed.get("timestamp"),
                 embed.get("description"),
                 embed.get("color"),
+                embed.get("thumbnail"),
+                embed.get("footer"),
+                embed.get("fields"),
                 embed.get("author"),
             )
             sub_embed = DiscordEmbed()
             if embed_title != "":
                 sub_embed.set_title(embed_title)
-            if embed_url != "":
+            if (embed_url != "") and (embed_url != None):
                 sub_embed.set_url(embed_url)
             if (embed_timestamp != "") and (embed_timestamp != None):
                 sub_embed.set_timestamp(parser.isoparse(embed_timestamp).timestamp())
@@ -120,6 +132,21 @@ def main(filepath: str, url: str, bar: bool = True) -> None:
                 sub_embed.set_description(embed_description)
             if embed_color is not None:
                 sub_embed.set_color(embed_color.replace("#", ""))
+            if embed_thumbnail is not None:
+                sub_embed.set_thumbnail(
+                    url=embed_thumbnail.get("url"),
+                    width=embed_thumbnail.get("width"),
+                    height=embed_thumbnail.get("height"),
+                )
+            if embed_footer is not None:
+                sub_embed.set_footer(text=embed_footer.get("text"))
+            if embed_fields is not None:
+                for field in embed_fields:
+                    sub_embed.add_embed_field(
+                        name=field.get("name"),
+                        value=field.get("value"),
+                        inline=field.get("isInline"),
+                    )
             webhook.add_embed(sub_embed)
 
         response = webhook.execute()
