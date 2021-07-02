@@ -21,8 +21,8 @@ import re
 url_re = re.compile("\?size.*")
 
 
-def main(filepath: str, url: str, bar: bool = False) -> None:
-    usebar = bar and progressbarimport
+def main(filepath: str, url: str, output: bool = False) -> None:
+    usebar = output and progressbarimport
     with open(filepath, "r") as f:
         filedata = json.loads(f.read())
     messages = filedata.get("messages")
@@ -146,7 +146,8 @@ def main(filepath: str, url: str, bar: bool = False) -> None:
         webhook.add_embed(embed0)
 
         response = webhook.execute()
-        print(response)
+        if output:
+            print(response)
 
 
 if __name__ == "__main__":
@@ -158,4 +159,4 @@ if __name__ == "__main__":
     argparser.add_argument("-f", "--file", help="JSON File", type=str, required=True)
     argparser.add_argument("-u", "--url", help="Webhook URL", type=str, required=True)
     args = argparser.parse_args()
-    main(args.file, args.url, bar=True)
+    main(args.file, args.url, output=True)
