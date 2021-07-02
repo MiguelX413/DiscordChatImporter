@@ -81,7 +81,9 @@ def main(filepath: str, url: str, bar: bool = True) -> None:
             )
         if (timestampEdited != None) and (timestampEdited != ""):
             embed0.add_embed_field(
-                name="Edited", value="<t:%s>" % int(parser.isoparse(timestampEdited).timestamp()), inline=False
+                name="Edited",
+                value="<t:%s>" % int(parser.isoparse(timestampEdited).timestamp()),
+                inline=False,
             )
         embed0.set_timestamp(parser.isoparse(timestamp).timestamp())
         webhook.add_embed(embed0)
