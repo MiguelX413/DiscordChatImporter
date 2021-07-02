@@ -21,7 +21,7 @@ import re
 url_re = re.compile("\?size.*")
 
 
-def main(filepath: str, url: str, bar: bool = True) -> None:
+def main(filepath: str, url: str, bar: bool = False) -> None:
     usebar = bar and progressbarimport
     with open(filepath, "r") as f:
         filedata = json.loads(f.read())
@@ -154,4 +154,4 @@ if __name__ == "__main__":
     argparser.add_argument("-f", "--file", help="JSON File", type=str, required=True)
     argparser.add_argument("-u", "--url", help="Webhook URL", type=str, required=True)
     args = argparser.parse_args()
-    main(args.file, args.url)
+    main(args.file, args.url, bar=True)
