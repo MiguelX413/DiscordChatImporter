@@ -59,45 +59,35 @@ def main(filepath: str, url: str, bar: bool = True) -> None:
             avatar_url=url_re.sub("", author_avatar_url),
         )
 
-        embed1 = DiscordEmbed()
+        embed0 = DiscordEmbed()
         if author_color is not None:
-            embed1.set_color(author_color.replace("#", ""))
-        embed1.set_author(
+            embed0.set_color(author_color.replace("#", ""))
+        embed0.set_author(
             name=author_name,
             url="https://discordapp.com/users/" + author_id,
             icon_url=url_re.sub("", author_avatar_url),
         )
-        embed1.add_embed_field(
+        embed0.add_embed_field(
             name="Discord User", value="<@%s>" % author_id, inline=True
         )
-        embed1.add_embed_field(name="Name", value=author_name, inline=True)
+        embed0.add_embed_field(name="Name", value=author_name, inline=True)
         if (author_nickname != author_name) and (author_nickname != ""):
-            embed1.add_embed_field(name="Nickname", value=author_nickname, inline=True)
+            embed0.add_embed_field(name="Nickname", value=author_nickname, inline=True)
         if author_is_bot:
-            embed1.add_embed_field(name="isBot", value="True", inline=False)
+            embed0.add_embed_field(name="isBot", value="True", inline=False)
         if isPinned:
-            embed1.add_embed_field(
+            embed0.add_embed_field(
                 name="isPinned", value="True", inline=True if author_is_bot else False
             )
-        embed1.set_timestamp(parser.isoparse(timestamp).timestamp())
-        webhook.add_embed(embed1)
-
         if (timestampEdited != None) and (timestampEdited != ""):
-            embed2 = DiscordEmbed()
-            if author_color is not None:
-                embed2.set_color(author_color.replace("#", ""))
-            embed2.set_timestamp(parser.isoparse(timestampEdited).timestamp())
-            embed2.set_footer(text="Edited")
-            webhook.add_embed(embed2)
+            embed0.add_embed_field(
+                name="Edited", value="<t:%s>" % int(parser.isoparse(timestampEdited).timestamp()), inline=False
+            )
+        embed0.set_timestamp(parser.isoparse(timestamp).timestamp())
+        webhook.add_embed(embed0)
 
         if content != "":
-            embed3 = DiscordEmbed(
-                # title="Content",
-                description=content,
-            )
-            if author_color is not None:
-                embed3.set_color(author_color.replace("#", ""))
-            webhook.add_embed(embed3)
+            webhook.content = content
 
         for embed in embeds:
             (
