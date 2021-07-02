@@ -39,6 +39,7 @@ def main(filepath: str, url: str, bar: bool = False) -> None:
         (
             author_id,
             author_name,
+            author_discriminator,
             author_nickname,
             author_color,
             author_is_bot,
@@ -46,6 +47,7 @@ def main(filepath: str, url: str, bar: bool = False) -> None:
         ) = (
             author.get("id"),
             author.get("name"),
+            author.get("discriminator"),
             author.get("nickname"),
             author.get("color"),
             author.get("isBot"),
@@ -58,35 +60,6 @@ def main(filepath: str, url: str, bar: bool = False) -> None:
             username=author_name,
             avatar_url=url_re.sub("", author_avatar_url),
         )
-
-        embed0 = DiscordEmbed()
-        if author_color is not None:
-            embed0.set_color(author_color.replace("#", ""))
-        embed0.set_author(
-            name=author_name,
-            url="https://discordapp.com/users/" + author_id,
-            icon_url=url_re.sub("", author_avatar_url),
-        )
-        embed0.add_embed_field(
-            name="Discord User", value="<@%s>" % author_id, inline=True
-        )
-        embed0.add_embed_field(name="Name", value=author_name, inline=True)
-        if (author_nickname != author_name) and (author_nickname != ""):
-            embed0.add_embed_field(name="Nickname", value=author_nickname, inline=True)
-        if author_is_bot:
-            embed0.add_embed_field(name="isBot", value="True", inline=False)
-        if isPinned:
-            embed0.add_embed_field(
-                name="isPinned", value="True", inline=True if author_is_bot else False
-            )
-        if (timestampEdited != None) and (timestampEdited != ""):
-            embed0.add_embed_field(
-                name="Edited",
-                value="<t:%s>" % int(parser.isoparse(timestampEdited).timestamp()),
-                inline=False,
-            )
-        embed0.set_timestamp(parser.isoparse(timestamp).timestamp())
-        webhook.add_embed(embed0)
 
         if content != "":
             webhook.content = content
@@ -140,6 +113,37 @@ def main(filepath: str, url: str, bar: bool = False) -> None:
                         inline=field.get("isInline"),
                     )
             webhook.add_embed(sub_embed)
+
+        embed0 = DiscordEmbed()
+        if author_color is not None:
+            embed0.set_color(author_color.replace("#", ""))
+        embed0.set_author(
+            name=author_name,
+            url="https://discordapp.com/users/" + author_id,
+            icon_url=url_re.sub("", author_avatar_url),
+        )
+        embed0.add_embed_field(
+            name="Discord User", value="<@%s>" % author_id, inline=True
+        )
+        embed0.add_embed_field(
+            name="Name", value=author_name + "#" + author_discriminator, inline=True
+        )
+        if (author_nickname != author_name) and (author_nickname != ""):
+            embed0.add_embed_field(name="Nickname", value=author_nickname, inline=True)
+        if author_is_bot:
+            embed0.add_embed_field(name="isBot", value="True", inline=False)
+        if isPinned:
+            embed0.add_embed_field(
+                name="isPinned", value="True", inline=True if author_is_bot else False
+            )
+        if (timestampEdited != None) and (timestampEdited != ""):
+            embed0.add_embed_field(
+                name="Edited",
+                value="<t:%s>" % int(parser.isoparse(timestampEdited).timestamp()),
+                inline=False,
+            )
+        embed0.set_timestamp(parser.isoparse(timestamp).timestamp())
+        webhook.add_embed(embed0)
 
         response = webhook.execute()
         print(response)
