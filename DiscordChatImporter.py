@@ -89,9 +89,9 @@ def main(filepath: str, url: str, output: bool = False) -> None:
             sub_embed = DiscordEmbed()
             if embed_title != "":
                 sub_embed.set_title(embed_title)
-            if (embed_url != "") and (embed_url != None):
+            if (embed_url != "") and (embed_url is not None):
                 sub_embed.set_url(embed_url)
-            if (embed_timestamp != "") and (embed_timestamp != None):
+            if (embed_timestamp != "") and (embed_timestamp is not None):
                 sub_embed.set_timestamp(parser.isoparse(embed_timestamp).timestamp())
             if embed_description != "":
                 sub_embed.set_description(embed_description)
@@ -136,7 +136,7 @@ def main(filepath: str, url: str, output: bool = False) -> None:
             embed0.add_embed_field(
                 name="isPinned", value="True", inline=True if author_is_bot else False
             )
-        if (timestampEdited != None) and (timestampEdited != ""):
+        if (timestampEdited is not None) and (timestampEdited != ""):
             embed0.add_embed_field(
                 name="Edited",
                 value="<t:%s>" % int(parser.isoparse(timestampEdited).timestamp()),
