@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 from discord_webhook import DiscordWebhook, DiscordEmbed
 from dateutil import parser
 from typing import TextIO
