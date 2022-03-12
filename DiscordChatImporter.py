@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 from discord_webhook import DiscordWebhook, DiscordEmbed
 from dateutil import parser
+from typing import TextIO
 
 try:
     from progressbar import progressbar
@@ -21,10 +22,10 @@ import re
 url_re = re.compile("\?size.*")
 
 
-def main(filepath: str, url: str, output: bool = False) -> None:
+def main(file: TextIO, url: str, output: bool = False) -> None:
     usebar = output and progressbarimport
-    with open(filepath, "r") as f:
-        filedata = json.loads(f.read())
+    filedata = json.loads(file.read())
+    file.close()
     messages = filedata.get("messages")
     for message in progressbar(messages, redirect_stdout=True) if usebar else messages:
         timestamp, timestampEdited, isPinned, content, author, attachments, embeds = (
@@ -157,10 +158,20 @@ if __name__ == "__main__":
         description="Loads data produced with DiscordChatImporter"
     )
     argparser.add_argument(
-        "file", metavar="JSON File", help="JSON File", type=str, required=True
+        "file",
+        action="store",
+        type=argparse.FileType("r"),
+        required=True,
+        help="JSON File",
+        metavar="JSON File",
     )
     argparser.add_argument(
-        "url", metavar="Webhook URL", help="Webhook URL", type=str, required=True
+        "url",
+        action="store",
+        type=str,
+        required=True,
+        help="Webhook URL",
+        metavar="Webhook URL",
     )
     args = argparser.parse_args()
     main(args.file, args.url, output=True)
