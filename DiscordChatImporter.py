@@ -156,7 +156,11 @@ if __name__ == "__main__":
     argparser = argparse.ArgumentParser(
         description="Loads data produced with DiscordChatImporter"
     )
-    argparser.add_argument("-f", "--file", help="JSON File", type=str, required=True)
-    argparser.add_argument("-u", "--url", help="Webhook URL", type=str, required=True)
+    argparser.add_argument(
+        "file", metavar="JSON File", help="JSON File", type=str, required=True
+    )
+    argparser.add_argument(
+        "url", metavar="Webhook URL", help="Webhook URL", type=str, required=True
+    )
     args = argparser.parse_args()
     main(args.file, args.url, output=True)
