@@ -11,9 +11,7 @@ except ModuleNotFoundError:
     progressbarimport = False
 
 try:
-    import ujson
-
-    json = ujson
+    import ujson as json
 except ModuleNotFoundError:
     import json
 
