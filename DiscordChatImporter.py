@@ -12,7 +12,7 @@ except ModuleNotFoundError:
 
 try:
     import ujson as json
-except ModuleNotFoundError:
+except ImportError:
     import json
 
 import re
